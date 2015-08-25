@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		*{ padding: 0; margin: 0; } 
+		div{ padding: 4px 48px;} 
+		body{ background: #fff; font-family: "微软雅黑"; color: #333;} 
+		h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } 
+		p{ line-height: 1.8em; font-size: 36px }
+		form{margin: 50px 50px}
+		textarea{margin: 0px 0 0 50px}
+		input{margin: 0px 0px 0px 50px}
+	</style>
+	<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9347272" charset="UTF-8"></script>
+	<script type="text/javascript">
+  		var myObj = getObj();
+  		var soc = new WebSocket("ws://127.0.0.1:9501");
+  		soc.onopen = function (event) {
+   			
+  		};
+ 		soc.onmessage = function (event) {
+   			 //console.log(event.data);
+   			 document.getElementById('chatarea').value += event.data;
+   			 
+  		};
+  		soc.onclose = function (event) {
+  			console.log('connect has closed!');
+  		}
+  		
+ 
+    	
+  		function getObj() {
+			var obj;
+			if(window.ActiveXObject){
+				obj = new ActiveXObject("Microsoft.XMLHTTP");
+			}else {
+				obj = new XMLHttpRequest();
+			}
+			return obj;
+			//myObj = obj;
+		}
+		
+		function insertcon(){
+			var myDate = new Date();
+  			var Y = myDate.getFullYear(); 
+  			var m = myDate.getMonth() + 1;
+  			var d = myDate.getDate();
+  			var H = myDate.getHours();
+  			var i = myDate.getMinutes();
+  			var s = myDate.getSeconds();
+  			var datetime = Y+'-'+m+'-'+d+' '+H+':'+i+':'+s; 
+  			var mes = "("+datetime+")<{:I('get.username')}>:"+document.getElementById('sendcon').value;
+			if(myObj) {
+				var url = "<{:U('Index/insertcon')}>";
+				var data = "content="+document.getElementById('sendcon').value+"&sender=<{:I('get.username')}>";
+				myObj.open('post',url,true);
+				myObj.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				myObj.onreadystatechange = function a(){
+					if(myObj.readyState == 4){
+						if(myObj.status == 200){
+							var res_obj = eval("("+myObj.responseText+")");
+							document.getElementById('sendres').value = res_obj;
+  							if(res_obj == "发言成功！"){
+	  							soc.send(mes);
+	  			
+	  						}
+						}
+					}
+				};
+				myObj.send(data);
+			}
+		}
+  		
+  		
+  		function del() {
+  			document.getElementById('chatarea').value = '';
+   		}
+   		
+   		function close(){
+     　　　　	soc.close();
+　　　		}
+ 	</script>
+
+	<title></title>
+</head>
+<body  onunload="close();">
+	<div style="padding: 24px 48px;"> 
+		<h1>:)</h1>
+		<p>你好!<b id="name"><{:I('get.username')}></b>！</p>
+	</div>
+	
+	<textarea cols="50" rows="20" id="chatarea"></textarea>
+	<input type="button" name="dele" id="del" value="清空聊天记录" onclick="del();"></input>
+	<input style="border-width:0;color:red;margin:0 0" type="text" id="del_res" >
+	<br>
+	<input type="text" name="content"  id="sendcon">
+	<input style="border-width:0;color:red;margin:0 0" type="text" id="sendres" >
+	<input type="button" value="发送"  style="margin:0 0" onclick="insertcon();">
+	<input type="button" value="断开连接" onclick="close();">
+	
+</body>
+</html>

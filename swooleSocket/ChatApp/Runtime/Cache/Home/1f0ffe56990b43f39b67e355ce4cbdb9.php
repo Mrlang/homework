@@ -1,0 +1,35 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		*{ padding: 0; margin: 0; } 
+		div{ padding: 4px 48px;} 
+		body{ background: #fff; font-family: "微软雅黑"; color: #333;} 
+		h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } 
+		p{ line-height: 1.8em; font-size: 36px }
+		form{margin: 50px 50px}
+	</style>
+	<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9347272" charset="UTF-8"></script>
+
+	
+	<title></title>
+</head>
+<body>
+	<div style="padding: 24px 48px;"> 
+		<h1>:)</h1>
+		<p>请登录 <b>Chatroom</b>！</p>
+	</div>
+	<form name="form1" action="<?php echo U('Index/doLogin');?>" method="post">
+		账号：<input type="text" name="logname" id="logname"/><br/>
+		密码：<input type="password" name="logpass" id="logpass" /><br/>
+		<input type="submit" name="login" value="登录" >
+
+	</form>
+	<form name='form1' action="<?php echo U('Index/doSign');?>" method="post">
+		账号：<input type="text" name="signname" /><br/>
+		密码：<input type="password" name="signpass" /><br/>
+		<input type="submit" name="sign" value="注册">
+	</form>
+
+</body>
+</html>
